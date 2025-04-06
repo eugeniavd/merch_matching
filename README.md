@@ -1,47 +1,65 @@
-# Мэтчинг товаров
+# 🛍️ Product Matching
 
-## Описание проекта
+## 📄 Project Description
 
-### Исходные данные
+This project focuses on building a product matching system for an online catalog. The goal is to find the top-5 most similar items for a given product using vector-based similarity search.
 
-- base.csv - датасет со всеми товарами. У каждого товара есть уникальный id (пример 4207931-base) и 72 признака.
-- train.csv - обучающий датасет, содержит индексы наиболее подходящих товаров-аналогов.
-- validation.csv - валидационный датасет для проверки финального алгоритма, содердт товары, где которых надо найти аналоги из base.csv
-- validation_answer.csv - валидационный датасет с разметкой наиболее подходящих товаров.
+## 📂 Input Data
 
-Все датасеты есть в полной и сокращенной версии.
+- `base.csv` — Dataset containing all products. Each product has a unique ID (e.g., `4207931-base`) and 72 features.
+- `train.csv` — Training dataset containing indices of the most similar (matching) products.
+- `validation.csv` — Validation dataset used to test the final algorithm. Contains products for which similar items must be found in `base.csv`.
+- `validation_answer.csv` — Labeled validation dataset with correct product matches.
 
-### Что надо сделать?
+> All datasets are provided in both full and reduced versions.
 
-- разработать алгоритм, который предложит 5 наиболее похожих товаров из df_base для каждого товара из df_valid
-- оценить качество алгоритма по метрике `accuracy@5`
+---
 
-### План работы:
+## 🎯 Objective
 
-1. Загрузка уменьшенного датасета
-2. Посмотреть результат FAISS на необработанных данных
-3. Предобработка данных
-4. Кластеризация
-5. Поиск ближайших соседей (KNN, тестирование разных межкластерных расстояний и faiss cpu gpu)
-6. Оценка качества работы алгоритма на validation
-7. Отбор важных признаков
-8. Поиск ближайших соседей + оценка качества подбора
-9. Разделить кластеры на подкластеры
-10. Оценка качества работы алгоритма на validation
-11. Проверка финального алгоритма на большом датасете
-12. Выводы
+- Develop an algorithm that suggests the **5 most similar products** from `df_base` for each product in `df_valid`.
+- Evaluate the quality of the algorithm using the **accuracy@5** metric.
 
-## Вывод
+---
 
-Разработан алгоритм, который находит 5 похожих товаров для всех товаров из `validation.csv`.
+## 🧩 Workflow Plan
 
-Значение целевой метрики `accuracy` 78.2% на валидационно выборке  достигнуто с использованием индекса `IndexFlatL2` модели `FAISS` и следующего алгоритма:
+1. Load the reduced dataset
+2. Evaluate FAISS on raw (unprocessed) data
+3. Data preprocessing
+4. Clustering
+5. Nearest neighbor search  
+   - Test different inter-cluster distance metrics  
+   - Use both FAISS CPU and GPU
+6. Evaluate algorithm performance on the validation set
+7. Feature selection (important features)
+8. Nearest neighbor search + quality evaluation
+9. Split clusters into subclusters
+10. Final evaluation on the validation set
+11. Test the final algorithm on the **full dataset**
 
-- данные смасштабированны с помощью `RobustScaler` (устойчив к выбросам, которые есть в данных);
-- удалены признаки с ненормальным распределением;
-- кол-во кластеров: 156;
-- `nprobe` = 180.
+---
 
-### Возможные доработки  
-- Разбивка кластеров на подкластеры
-- Тестирование разных видов расстояний - манхэттенское, косинусное и т д
+## ✅ Final Results
+
+An algorithm was successfully developed that finds the **top-5 similar products** for each item in `validation.csv`.
+
+- **Final accuracy@5: 78.2%** on the validation set  
+- Built using **FAISS** with the `IndexFlatL2` index  
+- Key configuration:
+
+  - Data scaled using **RobustScaler** (resistant to outliers)
+  - Features with abnormal distributions removed
+  - Number of clusters: **156**
+  - `nprobe = 180`
+
+---
+
+## 🔧 Possible Improvements
+
+- Further divide clusters into **subclusters**
+- Test alternative distance metrics:
+  - **Manhattan distance**
+  - **Cosine similarity**
+  - and others
+
